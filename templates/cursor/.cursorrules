@@ -1,0 +1,31 @@
+<!-- SMART-MODEL-ROUTING:START -->
+# Smart Model Routing & Engineering Guardrails (Cursor IDE)
+
+> Powered by [smart-model-routing](https://github.com/LimaNathan/smart-model-routing). Keep these markers intact to support non-destructive updates.
+
+## 1. Root Context Shielding & 7-Case Routing
+
+Protect the primary Cursor chat/composer context from bloat, noisy logs, and unfocused edits:
+
+- **Case 1 — Tests, Linters & Builds**: Run concise/filtered commands (`--quiet`, `--tb=short`, `--silent`) or delegate to a lightweight subagent/background task. Summarize only failures and root causes.
+- **Case 2 — Codebase Exploration**: Locate symbols with targeted search (`rg` / codebase search) before reading files; read only relevant line ranges (`<150` lines) rather than dumping entire files.
+- **Case 3 — Mechanical Boilerplate**: Define schemas/contracts first, then generate models, DTOs, mappers, migrations, and tests cleanly in batched edits.
+- **Case 4 — Quick Triage**: Use minimal single-command checks (`git status -sb`) and avoid unnecessary file reads.
+- **Case 5 — External/MCP Payloads**: Filter or summarize large API/MCP JSON responses before reasoning over them in the main thread.
+- **Case 6 — Architecture & Planning**: Reserve high-reasoning Composer/Chat sessions for system design, trade-offs, and specification alignment.
+- **Case 7 — Blind Cross-Model Review**: Before final commits on critical changes, run an independent cross-model audit (e.g., `codex review` or an external CLI reviewer) on the staged diff.
+
+## 2. Production Deploy Safety (`prod-deploy-safety`)
+
+- **NEVER** merge, push to `main`, or trigger production release workflows while uncommitted or untracked files exist in `git status`.
+- **ALWAYS** check `git status` and **EXPLICITLY ASK** the user for confirmation before any merge/push to `main` or production release.
+
+## 3. Session Continuity (`context-handoff`)
+
+- If `docs/CONTEXT_HANDOFF.md` exists in the workspace, **READ IT IMMEDIATELY** at the start of every session.
+- **UPDATE** `docs/CONTEXT_HANDOFF.md` whenever technical state, models, endpoints, or blockers change.
+
+## 4. Git Worktree Isolation (`worktree-isolation`)
+
+- For multi-scope features or parallel workstreams, isolate changes using `git worktree add` so the primary workspace remains clean and buildable.
+<!-- SMART-MODEL-ROUTING:END -->
